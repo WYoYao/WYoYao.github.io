@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Atom-Eommit 初体验
-subtitle: 自己的学习笔记笔记
+subtitle: 自己的学习笔记
 date: 2015-05-01T00:00:00.000Z
 author: WYY
 header-img: img/post-bg-unix-linux.jpg
