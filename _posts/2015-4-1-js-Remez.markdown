@@ -1,4 +1,4 @@
-<!-- ---
+---
 layout:     post
 title:      "JavaScript预解释"
 subtitle:   "JS基础笔记"
@@ -8,7 +8,7 @@ header-img: "img/post-bg-js-module.jpg"
 catalog: true
 tags:
     - JavaScript
---- -->
+---
 
 
 #  JS预解释
