@@ -2,7 +2,7 @@
 layout: post
 title: Babel基本使用
 subtitle: 自己的学习笔记
-date: 2015-05-09T00:00:00.000Z
+date: 2016-04-08T00:00:00.000Z
 author: WYY
 header-img: "img/Coder.jpg"
 catalog: true
