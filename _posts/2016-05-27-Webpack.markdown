@@ -2,12 +2,13 @@
 layout: post
 title: webpack 实现基本功能
 subtitle: 自己的学习笔记
-date: 2016-04-08T00:00:00.000Z
+date: 2016-05-08T00:00:00.000Z
 author: WYY
 header-img: "img/Coder.jpg"
 catalog: true
 tags:
   - React
+  - webpack
 ---
 # webpack 实现基本功能
 ### 初始化项目
@@ -15,6 +16,8 @@ tags:
 >初始化git 仓库
 >添加README.md 文件和git 忽略文件
 >初始化npm 包
+
+
 ```
 $ mkdir webpack-demos && cd webpack-demos
 $ git init
@@ -33,6 +36,8 @@ node_modules
 >搭建基本的项目结构
 >创建两个文件夹
 >src 存放源码 build 存放打包之后的资源文件
+
+
 ```
 mkdir src build
 cd src
@@ -42,6 +47,8 @@ cd ../build && touch index.html
 
 >向源码文件中添加代码
 > src/index.js
+
+
 ```
 /* src/index.js */
 var component = require('./component.js');
@@ -70,14 +77,19 @@ module.exports = function(){
 
 ### 安装需要的依赖包
 > 安装并保存在项目的依赖中
+
+
 ```
 $ npm install --save-dev webpack webpack-dev-server
 ```
 
 > 创建配置文件webpack.config.js
+
+
 ```
 touch webpack.config.js
 ```
+
 > 请注意webpack.config.js这个文件命名，默认情况下需要严格按照这个命名，不然会报Output filename not configured的错误；另外，如果不按这个命名，那么在webpack运行的时候通过--config 这个参数指定配置文件，比如：webpack --config config .js
 
 > 对配置文件进行基本的配置
@@ -136,11 +148,14 @@ webpack-dev-server --progress --colors --content-base build
 >- webpack-dev-server --port 3000 设置服务端口
 
 ### 创建多文件入口
+
 ```
 cd src && touch entry1.js entry2.js
 ```
 > 修改webpack.config.js 配置文件中的内容
 > 最后生成的文件名是entry的key
+
+
 ```
 /* webpack.config.js */
 var path = require('path');
@@ -158,6 +173,8 @@ module.exports = {
 ```
 
 > 然后执行webpack -p 进行编译
+
+
 ```
 webpack -p
 ```
@@ -186,11 +203,15 @@ ReactDOM.render(<HelloWorld />,document.getElementById('app'));
 ```
 
 > 下载需要依赖的包，接下来我们用到了react 和react-dom.js 先下载这两个包
+
+
 ```
 $ npm install --save react react-dom
 ```
 > 下载并配置Babel 用来解析ES6和JSX语法
 > <a href="http://wyoyao.github.io/2016/04/08/js-babel/">更多Babel 信息</a>
+
+
 ```
 npm install babel-loader babel-core --save-dev
 ```
@@ -225,12 +246,16 @@ module.exports = {
 > 上面在webpack.config.js 中指定了 babel-loader 来解析 .js 文件，但是我们并没有对Babel 进行相关的配置(接下来，我们需要对Babel进行配置)
 
 > 添加.babelrc (Babel 的配置文件)
+
+
 ```
 touch .babelrc
 ```
 
 > 添加.babelrc 文件中内容如下
 > 设置Babel 的预设 和控件
+
+
 ```
 {
   "presets": ["es2015", "react", "stage-0"],
@@ -239,11 +264,15 @@ touch .babelrc
 ```
 > 上述配置中选择的es2015，react，stage-0 三个预设
 > 接下来安装这三个预设
+
+
 ```
 $ npm install --save-dev babel-preset-es2015 babel-preset-react babel-preset-stage-0
 ```
 
 > 接下来执行编译命令
+
+
 ```
 webpack-dev-server --progress --colors --content-base build
 ```
@@ -289,17 +318,22 @@ module.exports = {
     }
 };
 ```
+
 > 在devServer 里面我们配置了publicPath 属性
 > 所以后面引用devServer创建的Expresss服务器的时候都需要添加/static/ 这个虚拟路径
 
 ### 使用webpack-dev-server mock 数据
 > 下面开始使用webpack-dev-server 模拟接口中的数据
 > 首先创建一个保存数据的json文件
+
+
 > ```
 > cd build/
 > touch test.json
 > ```
 > 在test.json 文件下面添加数据
+
+
 > ```
 > {
 > "name":"王有药"
@@ -371,6 +405,8 @@ module.exports = {
 > extension(扩展)
 > 在webpack.config.js 中添加如下配置
 > 下面配置的效果是省略在require 和import的时候添加文件后缀
+
+
 > ```
 > resolve: {
 >    extensions: ["", ".js", ".jsx", ".css", ".json"]
@@ -422,6 +458,8 @@ ReactDOM.render(<HelloWorld />, document.getElementById('app'));
 
 > 暂且约定使用less预处理器（saas的类似）来写项目的样式
 > 1.添加解析文件的预设
+
+
 ```
 $ npm install --save-dev style-loader css-loader less-loader
 ```
@@ -431,6 +469,8 @@ cd src && mkdir components
 cd components && mkdir Button
 cd Button && touch Button.js Button.less
 ```
+
+
 > 下面添加内容
 > Button.js代码：
 
@@ -456,6 +496,8 @@ class Button extends Component {
 export default Button;
 ```
 > Button.less代码：
+
+
 ```
 .my-button {
   color: #fff;
@@ -502,6 +544,8 @@ ReactDOM.render( <Button />, root );
 ### 图标字体等资源
 > 加载图标字体的加载可以使用file-loader 或 url-loader 进行加载
 > 同时也需要修改配置文件
+
+
 ```
 {
   test: /\.(woff|woff2|ttf|svg|eot)(\?v=\d+\.\d+\.\d+)?$/,
@@ -509,17 +553,8 @@ ReactDOM.render( <Button />, root );
 }
 ```
 > 下载对应的图标字体资源(暂时现在bootstrap)
+
+
 ```
 npm install bootstrap --save
 ```
-
-[ 参考文档地址](http://guoyongfeng.github.io/idoc/html/React%E8%AF%BE%E7%A8%8B%E4%B8%93%E9%A2%98/Webpack%E5%9F%BA%E7%A1%80.html)
-
-[视频地址](http://www.zhufengpeixun.cn/course/31/learn#lesson/774)
-
-
-
-
-
-
-### 遗留问题 less 中的样式没显示出来
