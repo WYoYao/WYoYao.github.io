@@ -21,18 +21,18 @@ tags:
 > - sessionStorage，就像session一样，在整个会话结束后就为释放
 
 > 相同点：
-> -对象的方法一致
-> 写入一个键值对
-> 写入一个键值对
+>- 写入一个键值对
 > setItem('key','value');
-> 读取一个键值对
+>- 读取一个键值对
 > getItem('key');
-> 清除一个键值对
+>- 清除一个键值对
 > removeItem('key');
-> 清除所有的键值对
+>- 清除所有的键值对
 > clear();
 
->  sessionStorage的用法
+### sessionStorage的用法
+
+
 ```
 if(window.sessionStorage){
 	var Storage=window.sessionStorage;
@@ -51,7 +51,7 @@ if(window.sessionStorage){
 ```
 > sessionStorage的值只能当前会话访问，就算同一浏览器多个窗口也不能同时访问，页面关闭以后，值会自动释放。
 
->  localStorage 的用法
+###  localStorage 的用法
 ```
 if(window.localStorage){
 	var Storage=window.localStorage;
@@ -82,6 +82,8 @@ if(window.localStorage){
 
 ### 对Storage中的值进行事件的监听
 > 可以通过storage 事件对键值对进行持续的监听，但是这只是不同页面之前的监听，比如另一个页面修改之后，当前页面会触发修改。
+
+
 ```
 <!DOCTYPE html>
 <html lang="en">
