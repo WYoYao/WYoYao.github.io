@@ -21,18 +21,22 @@ tags:
 > - sessionStorage，就像session一样，在整个会话结束后就为释放  
 
 > 相同点：  
+
 - 写入一个键值对      
 ```
 setItem('key','value');
-```  
+```
+
 - 读取一个键值对       
 ```  
 getItem('key');
 ```  
+
 - 清除一个键值对   
 ```  
 removeItem('key');
 ```
+
 - 清除所有的键值对  
 ```  
 clear();
