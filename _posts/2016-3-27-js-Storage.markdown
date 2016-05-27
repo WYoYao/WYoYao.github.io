@@ -17,17 +17,17 @@ tags:
 > localStorage和sessionStorage 用于本地存储
 > 整个localStorage 和 sessionStorage 整个作用域就是当前整个站点
 > 首相两点的不同：
-> - localStorage只保存在本地(可以一直保存)
-> - sessionStorage，就像session一样，在整个会话结束后就为释放
+> - localStorage只保存在本地(可以一直保存)  
+> - sessionStorage，就像session一样，在整个会话结束后就为释放  
 
 > 相同点：
->- 写入一个键值对
+>- 写入一个键值对    
 > setItem('key','value');
->- 读取一个键值对
+>- 读取一个键值对     
 > getItem('key');
->- 清除一个键值对
+>- 清除一个键值对   
 > removeItem('key');
->- 清除所有的键值对
+>- 清除所有的键值对  
 > clear();
 
 ### sessionStorage的用法
