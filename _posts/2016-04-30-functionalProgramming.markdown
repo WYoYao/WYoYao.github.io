@@ -1,7 +1,7 @@
 ---
 layout:     post
-title:      "ES函数式编程"
-subtitle:   "ES函数式编程"
+title:      "ES6函数式编程"
+subtitle:   "ES6函数式编程"
 date:       2016-04-30
 author:     "WYY"
 header-img: "img/post-bg-js-module.jpg"
