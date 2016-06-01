@@ -1,6 +1,6 @@
 ---
 layout: post
-title: dos 查看当前端口状态
+title: Dos 查看当前端口状态
 subtitle: 学习笔记
 date: 2015-06-02T00:00:00.000Z
 author: WYY
