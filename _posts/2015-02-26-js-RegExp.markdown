@@ -1,0 +1,380 @@
+---
+layout:     post
+title:      "JS中的正则"
+subtitle:   "JS中的正则"
+date:       2014-02-26
+author:     "WYY"
+header-img: "img/post-bg-js-version.jpg"
+catalog: true
+tags:
+    - JavaScript
+---
+
+
+
+# RegExp常见使用
+
+### 创建正则
+>创建正则有两种方式
+>- 字面量创建方式
+>```
+>let reg=/^\d$/g;
+>```
+>- 实例创建方式
+>```
+>let reg=new RegExp('/^\d$/g')
+>```
+> **正则的两种创建方式是有区别的**
+
+>- 字面量创建的方式中字面量中所有的出现的字符都代表元字符，所以不能通过字符串拼接实现创建的方式。
+```
+let name='leo';
+let reg=/^'+name+'$/;
+// 当需要使用字符串拼接的时候字面量创建的方式会出错
+//  可以看出来当前的正则表达式并不是我们想实现的/^leo$/ 而是 /^'+name+'$/
+console.log(reg);
+reg.test('leo');//false
+reg.test('\'name\'')//true
+reg.test('\'\'nameeeee\'')//true
+
+// 上面通过字面量方式创建的方法已经不是适用字符串拼接的方法了，最简单的方法是通过 创建类型实例的方式创建正则对象
+
+let regs=new RegExp('^'+name+'$');
+regs.test('leo');//true
+regs.test('\'name\'')//false
+regs.test('\'\'nameeeee\'')//false
+
+```
+
+### 正则
+>每一个正则都是通过元字符和修饰符组成的  
+>- 元字符：具有意义的字符
+
+
+特殊元字符 | 意义
+---|---
+\ | 转义字符，转义后面字符所代表的含义
+^ | 以某一个元字符开始，不占位置
+$ | 以某一个元字符结束，不占位置
+. | 除了\n以外的任意字符
+\n | 换行符
+() | 分组，将正则分组
+a\|b | a或b中的任意一个
+[abc] | a,b,c中任意一个
+[^abc]|abc以外任意一个字符
+[a-z]|a-z中的任意一个字符
+[^a-z]|a-z以外的任意一个字符
+\d|任意一个0-9之间的字符
+\D|0-9以外的任意一个字符
+\b|匹配一个边界符，不占位
+\w|数字，字母，下划线，等价与[0-9a-zA-Z_]
+\w|数字，字母，下划线以外的字符
+\s|空白字符，空格，制表符，...
+\S|空白字符，空格，制表符，以外的字符
+(?!$)|反向预测修饰符(不能是结尾)
+(?=$)|反向预测修饰符(必须是开始)
+
+量词元字符 | 意义
+---|---
+* | 出现0~多次
++ | 出现1~多次
+? | 出现0~1次
+{n} | 出现n次
+{n,} | 出现n~多次
+{n,m} | 出现n~m次
+
+
+
+> 规律
+> [] 中的字符没有其他含义，都是进行转义过的字符
+
+
+> 使用 | 容易出现歧义，但是可以使用（）来改变优先级
+
+```
+var reg=/^18|19$/;
+// 使用的|的时候需要注意，|很容易造成混乱，上面一个正则可以理解为多个意思
+reg.test('18');//true
+reg.test('19');//true
+reg.test('1819');//true
+reg.test('185');//true
+reg.test('619');//true
+reg.test('189');//true
+reg.test('119');//true
+// 可以被理解成为以下内容
+[/(^18)|(19$)/,//以18 开头 以19结尾
+/^1(8|1)9$/,//以1开头，中间有8或1，以9结尾
+];
+// 如果只想匹配18或19可以使用()
+var reg=/^(18|19)$/;
+reg.test('18');//true
+reg.test('19');//true
+reg.test('1819');//false
+reg.test('185');//false
+reg.test('619');//false
+reg.test('189');//false
+reg.test('119');//false
+```
+
+
+### 正则的捕获
+
+> 正则捕获可以使用exec
+```
+let testreg=/\d+/;
+
+/**
+ * lastIndex:正则每次一捕获，在字符串中开始查找的位置(默认值的位置)；
+ * 
+ */
+dir(testreg);
+
+/**
+ * 0:"2015" 捕获的第一内容
+ * index:3  捕获第一个内容的开始
+ * input:"leo2015leo2016leo2017" 被用来捕获的原字符串'
+ */
+dir(testreg.exec('leo2015leo2016leo2017'));
+```
+
+>正则捕获的原理
+```
+/**
+ * 正则捕获的原理
+ * 1.捕获之前先进行匹配如果不匹配直接返回 null，如果有匹配的项就会返回对应的数组
+ * 2.正则具有懒惰性，每次捕获只会捕获一个值(在不进行任何处理的情况下)
+ * 
+ */
+```
+
+> 懒惰性
+```
+//  在不进行任何处理的情况下执行多次还是捕获最开始内容，正则的懒惰性
+let testreg=/\d+/;
+// 每一次捕获的时候lastIndex 都是0 ，那么每一次都会从0的位置开始进行查找，所以每次查找的位置都是从0开始，然后每次查找出来的值都是相同的
+console.log(testreg.lastIndex);
+console.log(testreg.exec('leo2015leo2016leo2017'));
+console.log(testreg.lastIndex);
+console.log(testreg.exec('leo2015leo2016leo2017'));
+console.log(testreg.lastIndex);
+```
+
+> 正则的修饰符
+```
+/**
+ * 修饰符：
+ * g:global 全局作用
+ * i:ignoreCase 忽略大小写
+ * m:multiline 多行匹配
+ */
+console.dir(/^\d$/);
+
+```
+
+> 可以通过全局修饰符g,来处理正则的懒惰性
+```
+//  解决正则的懒惰性  通过全局修饰符 修饰
+let testreg=/\d+/g;
+// 通过是用g全局修饰符修饰的时候，每一次执行正则捕获的时候 lastIndex 修改为上次捕获到的位置的尾
+console.log(testreg.lastIndex);
+console.log(testreg.exec('leo2015leo2016'));
+console.log(testreg.lastIndex);
+// 因为这次lastIndex 的值为7就不会捕获7之前的内容，所以就不会捕获2015了
+console.log(testreg.exec('2015leoleo2016'));
+console.log(testreg.lastIndex);
+
+// 如果需要捕获全部的匹配内容可以使用循环
+
+let reg=/\d+/g;
+let arr=[];
+let str='leo2015leo2016leo2017leo';
+let res=reg.exec(str);
+console.log(res);
+while (res) {
+    arr.push(res[0]);
+    res=reg.exec(str);
+}
+console.log(arr);
+```
+
+> 正则的贪婪性
+>> 正则每次捕获的内容都是能够匹配的最大内容，这就是正则的贪婪性。
+
+> 解决正则的贪婪性可以在正则的量词元字符中添加一个?
+
+```
+// 可以通过在+ 量词元字符后面添加? 来解决正则的贪婪性
+let reg=/\d+?/g;
+let arr=[];
+let res=reg.exec(123456789);
+while (res) {
+    arr.push(res[0]);
+    res=reg.exec(123456789);
+}
+console.log(arr);
+```
+
+### match 捕获
+
+> exec 是RegExp的方法，每次只能捕获一个。
+> match 是String的方法，能够全部的捕获匹配的内容，但是也需要正则的全局修饰符才能完成多个同时的捕获。
+
+```
+let str='leo2016leo2017leo2018';
+let reg=/\d+/g;
+let arr = str.match(reg);
+console.log(arr);
+```
+
+
+> 虽然match捕获普通正则的时候比exec简便,,但是match也有局限性，当大正则中存在分组()的时候，match 就不能满足这样的功能了。**match** 不能实现分组捕获的功能。
+
+### 正则的分组
+
+> 正则的分组作用
+```
+/**
+ * 正则的分组：
+ * 1.改变优先级
+ * 2.分组引用 匹配相同的值
+ * 3. \1表示与第一分组的值需要一模一样，\2表示与第二个分组匹配的值一摸一样
+ */
+
+// 下面这个正则匹配的时候就需要 \1和第一个分组中(\w)捕获的值一模一样
+let reg=/^(\w)\1(\w)\2$/;
+reg.test('aabb');
+reg.test('1122');
+```
+
+> 分组捕获，不仅可以捕获到大正则的内容，还可以捕获小正则中的内容。
+
+```
+let id_card_reg=/^(\d{2})(\d{4})(\d{4})(\d{2})(\d{2})(\d{2})(\d{1})(\d|X)$/;
+
+/**
+ * 返回的结果为一个数组：["420683199310200319", "42", "0683", "1993", "10", "20", "03", "1", "9"]。
+ * 第一个捕获的内容为当前整个大正则捕获的内容。
+ * 第二个以后是大正则中的小分组捕获的内容。
+ * 
+ */
+id_card_reg.exec('420683199310200319');
+
+// 如果的正则中的分组使用只是为了匹配而不想使用小分组进行捕获，可以在元字符之前添加 ?:来进行区别
+let id_card_reg_beata=/^(\d{2})(\d{4})(\d{4})(\d{2})(\d{2})(\d{2})(\d{1})(?:\d|X)$/;
+// ["420683199310200319", "42", "0683", "1993", "10", "20", "03", "1"] 这个时候后面捕获的数组中不不会捕获到最后面的一位数字'
+id_card_reg_beata.exec('420683199310200319');
+
+// 注意个这个时候捕获的分组中不会存在倒数第二个分组(因为第二个分组的已经通过?:)忽略了,所以捕获的数组中的，会少一个分组的捕获
+let id_card_reg_beata1=/^(\d{2})(\d{4})(\d{4})(\d{2})(\d{2})(\d{2})(?:\d{1})(\d|X)$/;
+id_card_reg_beata1.exec('420683199310200319');
+// 当([A-Z]{1})? 没有匹配到内容分组，这个时候返回的数组中的会为undefind
+let id_card_reg_beata2=/^(\d{2})(\d{4})(\d{4})(\d{2})(\d{2})(\d{2})([A-Z]{1})?(?:\d{1})(\d|X)$/;
+id_card_reg_beata2.exec('420683199310200319');
+```
+
+
+> match 和exec 分组捕获的区别
+
+```
+let reg=/leo(\d+)/g;
+let str='leo2015leo2016leo2017';
+
+// 通过exec 循环全部捕获
+let arr=[];
+//["leo2015",1:"2015"] exec 每次返回的对象
+let res=reg.exec(str);
+while (res) {
+    arr.push(res);
+    res=reg.exec(str);
+}
+// exec 每次分组捕获的分组都保存在arr中
+console.log(arr);
+
+
+// 通过match 进行分组捕获
+// ["leo2015", "leo2016", "leo2017"] 这个时候只捕获到了内容，但是分组的捕获的数据没有在返回值中体现。
+str.match(reg);
+```
+
+### replace 替换和捕获
+
+```
+
+let str='leo2015leo2016leo2017';
+
+// 使用字符串的时候只能执行的一次替换，如果需要完成多次替换的时候使用字符串不能解决问题
+str.replace('leo','hello');//"hello2015leo2016leo2017"
+str.replace('leo','hello').replace('leo','hello').replace('leo','hello');//"hello2015hello2016hello2017"
+
+// 这个时候可以使用正则来解决这个问题
+str.replace(/leo/g,'hello');//"hello2015hello2016hello2017"
+
+/**
+ * replace的实现原理
+ * 1.和exec捕获一样，我们把所有正则匹配的内容全部都捕获到。   
+ * 2.然后把捕获的内容全部都进行替换成新的内容。
+ */
+// 正则替换的内容，如果第二个参数是一个函数的时候，则替换这个函数的返回值
+str.replace(/leo/g,()=> 'hello');
+
+str.replace(/leo/g,function () {
+    // 正则捕获几次，回调函数执行几次
+    /**
+     * value :捕获的内容
+     * lastIndex： 正则的lastIndex
+     * 用于replace的原数组
+     */
+    console.log(arguments);
+    // return 返回的结果是什么被匹配的文字就被替换成返回的内容
+    return 'hello';
+});
+
+// 使用的repalce callback 方法每次执行的的参数 和使用 exec 循环打印的值是一样的
+let reg=/leo/g;
+reg.exec(str);//["leo", 0, "leo2015leo2016leo2017"]
+reg.exec(str);//["leo", 7, "leo2015leo2016leo2017"]
+reg.exec(str);//["leo", 14, "leo2015leo2016leo2017"]
+
+
+let reg_team=/leo(\d+)/g;
+str.replace(reg_team,function(){
+    /**
+     * 这个时候callback 返回的参数中
+     * 1.被捕获的内容
+     * 2.被捕获的分组内容
+     * 3.lastIndex 的值
+     * 4.原字符串
+     */
+    console.log(arguments);
+    //IE 下不兼容 $1表示的是 正则捕获的第一个分组的内容
+    console.log(reg_team.$1);
+    return 'hello';
+})
+```
+
+### 正则的总结
+
+> 正则捕获的三种方法
+>>- RegExp.exec
+>>- String.match
+>>- String.replace
+
+> 正则有两个特性
+>>- 懒惰性：通过Reg最后面添加全局修饰符g进行处理
+>>- 贪婪性: 通过在量词元字符的前面的添加?进行处理
+
+> 捕捉的时候需要用忽略分组的时候的可以在分组中的元字符前添加:?
+
+
+方法 | 一直性捕获多次 |一次性分组捕获|多次分组捕获
+---|---|---|---
+ exec | false | true |  true 
+match | true | true | false 
+replace | true |  true | true 
+
+>[] 里的内容都是进行转义的
+
+>- test 执行每次只要匹配一个就结束,每次执行完之后都会修改RegExp实例的lastIndex,如果执行检测的时候失败，会将lastIndex 的值设为0.
+>- exec 执行每次只要匹配一个就结束,每次执行完之后都会修改RegExp实例的lastIndex,如果执行检测的时候失败，会将lastIndex 的值设为0.
+
+

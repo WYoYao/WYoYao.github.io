@@ -1,0 +1,138 @@
+---
+layout:     post
+title:      "JS获取样式"
+subtitle:   "JS获取样式"
+date:       2014-12-12
+author:     "WYY"
+header-img: "img/post-bg-js-version.jpg"
+catalog: true
+tags:
+    - JavaScript
+---
+
+
+# 元素的样式
+
+
+### style
+> XXX.style.样式属性
+> 只能获取元素的行内样式的信息  
+> 缺点:只能获取的行内样式，无法实现的html 和 css 的分离
+
+
+### window.getComputedStyle
+> 使用 window.getComputedStyle 这个方法获取所有经过浏览器计算过的样式，只要当前的元素标签可以在页面中呈现出来，那么它的所有样式,都是经过浏览器计渲染过的(哪怕的是浏览器默认的样式).
+
+> 缺点:IE789下不兼容，window下没有的这个属性。
+> 补救措施:在IE678 下使用的currentStyle 这个属性的来获取的对应的样式。
+
+```
+/**
+ * box 需要计算的元素
+ * null 伪类
+ * IE 678 中不兼容
+ */
+console.log(window.getComputedStyle(box,null))
+// IE678 下可以使用的currentStyle 来进行处理 
+console.log(box.currentStyle)
+```
+
+> 兼容方法
+
+```
+/**
+ * 获取当前元素所有经过浏览器计算过的attr样式
+ * curEle:当前要获取的样式的元素对象。
+ * attr:我们要获取样式属性的名称。
+ */
+function getCSS(curEle, attr) {
+    var result,reg;
+    try {
+        if (window.getComputedStyle) {
+            result = window.getComputedStyle(curEle, null)[attr];
+        } else {
+
+            //兼容特殊样式属性
+            if(attr=='opacity'){
+                // 获取的IE下对应样式的值 
+                result=curEle['currentStyle']['filter'];
+                reg=/^alpha\(opacity=(\d+(?:\.\d+)?)\)$/i;
+                result=reg.test(result)?reg.exec(result)[1]/100:void 0;
+            }
+
+            // 兼容的IE678
+            result = curEle['currentStyle'][attr];
+        }
+    } catch (error) {
+        return void 0;
+    } finally {
+        // 有的样式属性不能够去单位
+        reg=/^(-?\d+(\.\d+)?)(px|pt|em|rem)?$/i;
+        return reg.test(result)?parseFloat(result):result;
+    }
+}
+```
+
+### CSS伪类的应用
+
+>- :before 
+>- :after
+> 在一个标签的前面和后面创建一个虚拟的标签,我们可以给这个虚拟的标签添加样式，也可以增加内容等。
+
+
+### 父级节点
+
+>- parentNode:父亲节点:HTML结构的层级中的上一级元素。
+>- offsetParent:父级参照物，在同一平面中,最外层元素是里面所有元素的父级参照物，和HTML没有必然的联系。
+
+>> 想要改变父级参照物,可以通过position 来进行改变。
+
+position | 是否修改
+---|---
+relative | true
+absolute | true
+fixed | true
+static | false
+initial | false
+inherit | false
+
+> 获取元素外边框距离的当前屏幕顶部左边的距离
+```
+var getOffset=function(dom){
+    var result={
+        left:0,
+        top:0
+    };
+
+    if(dom){
+        var parentOffset= dom.offsetParent;
+        var oDom=dom;
+        while(parentOffset){
+            console.log(!/MSIE (6|7|8)/.test(window.navigator.userAgent));
+            if(oDom!=dom && !/MSIE (6|7|8)/.test(window.navigator.userAgent)){
+                result.left+=oDom.clientLeft;
+                result.top+=oDom.clientTop;
+            }
+
+            result.left+=oDom.offsetLeft;
+            result.top+=oDom.offsetTop;
+            oDom=oDom.offsetParent;
+            parentOffset=oDom.offsetParent;
+        }
+    }
+
+    return result;
+}
+```
+
+### scroll
+>- client系列
+>- offset系列
+>- scroll系列   
+> 这三个系列中的唯一一个可写可读的属性就是
+>>- scrollTop 
+>>- scrollLeft
+> 可以设置元素的scrollTop,scrollLeft来控制滚动条的位置，设置值的时候有最大值和最小值,如果超出了最大最小值那么就会默认的成最大,最小值。
+>>- 最小值是的0
+>>- 最大值是的 真实高度-当前容器的高度
+>>- dom.scrollTop-dom.clientTop

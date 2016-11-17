@@ -14,7 +14,7 @@ tags:
 
 # React/React Native 的ES5 ES6写法对照表   
 
-###1. 引用
+### 1. 引用
 
 >在ES5中使用CommonJS标准，引入React包基本on各国require进行
 >ES5代码：

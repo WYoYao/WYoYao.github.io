@@ -1,0 +1,24 @@
+---
+layout:     post
+title:      "JS中的数据类型检查"
+subtitle:   "JS中的数据类型检查"
+date:       2014-03-06
+author:     "WYY"
+header-img: "img/post-bg-js-version.jpg"
+catalog: true
+tags:
+    - JavaScript
+---
+
+
+
+# 数据类型检测
+
+
+检测数据类型的方法 | 功能|缺点
+---|---|---
+typeof | 检测除引用实例以外的方法| null,[] 都返回的是object
+instanceof | 根据原型链进行查找|通过字面量创建的基本类型检测都为false,console.log(1 instanceof Number);console.log(new Number(1) instanceof Number);只要在原型链上面拥有的时候就为true
+constructor | 根据原型上的constructor进行查找|constructor查找方式跟instanceof 相似，(1).\__proto__.constructor基础数据类型也可以检测,但是原型可能会被修改，重写后constructor，检测类型就不准确了，不能检测 null undefind
+prototype.toString.call | 根据Object.prototype.toString 进行查找|最准确的方法，但是
+

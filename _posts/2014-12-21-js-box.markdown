@@ -1,0 +1,80 @@
+---
+layout:     post
+title:      "JS中的盒子模型"
+subtitle:   "JS中的盒子模型"
+date:       2014-12-21
+author:     "WYY"
+header-img: "img/post-bg-js-version.jpg"
+catalog: true
+tags:
+    - JavaScript
+---
+
+# 盒子模型
+
+> JS盒子模型就是通过JS提供的属性和方法来，获取页面元素的信息值
+
+### client系列
+
+属性 | 含义| CSS
+---|---|---
+client[Width/Height] | 内容的[宽度/高度]| [width/height]+[paddingLeft/paddingTop]
+clitent[Left/Top]| 左上边框的厚度| [borderLeftWidth/borderTopWidth]
+
+
+### offset系列
+ 
+属性 | 含义| CSS
+---|---|---
+offset[Width/Height] | 内容[左右/上下]外边距离| [clientWidth/clientHeight]+[borderLeftWidth/borderTopWidth]+[borderRightWidth/borderBottomWidth]
+offsetLeft\offsetTop | 当前元素的外边框距离父级参照物的内边框的偏移量| [marginLeft/marginTop]
+offsetParent | 当前元素的父级参照物| 
+
+### scroll系列
+> 同一个浏览器中的属性overflow:hidden 会影响scroll的取值，不同的浏览器也会影响其的取值。
+
+属性 | 内容未溢出|内容溢出| CSS
+---|---|---|---
+scrollWidth/scrollHeight| 和client[Width/Height] 相同|真实内容[宽/高]度+[左/上]填充| 真实内容[宽/高]度+[paddingLeft/paddingTop]
+scrollLeft/scrollTop | 0 |滚动条卷去的宽度和高度|  
+
+
+> 通过上面盒子模型的取值永远都是整数不会是小数,在获取的时候都会进行四舍五入。
+
+
+### 浏览器盒子信息
+
+> 不管什么浏览器，不管获取什么属性，想要都兼容的时候，都需要写两套
+
+```
+// 必须document.documentElement[Attr]在前
+document.documentElement[Attr] || document.body[Attr];
+```
+
+> 兼容的方法
+```
+//编写一个兼容的浏览器窗口信息的方法
+/**
+ * attr 属性名
+ * value 设置的值，如果为空表示获取对应的属性的值
+ */
+function win(attr,value){
+    if(typeof value=='undefind'){
+        //获取对应的值
+        return document.documentElement[attr] || document.body[attr];
+    }
+    // 设置对应的属性值
+    document.documentElement[attr]=document.body[attr]=value;
+}
+```
+
+
+变量 | 含义
+---|---
+document.documentElement.clientWidth | 当前可视窗口的宽
+document.documentElement.clientHeight | 当前可视窗口的高
+document.documentElement.scrollHeight|当前页面整体的高度
+document.documentElement.scrollWidth|当前页面整体的宽度
+
+
+
