@@ -13,7 +13,7 @@ tags:
 
 # React-Native 组件的生命周期
 
-###1.1 getInitialState
+### 1.1 getInitialState
 > 状态初始化调用一次 getInitialState方法
 > 这个函数在组件初始化之前调用，他的返回值会成为this.state 的初始值。
 > ES5
@@ -40,6 +40,7 @@ tags:
 > ```
 
 ###1.2 getDefaultProps
+
 > 在组件被创建时调用一次 getDefaultProps 返回的值会成为this.props 的初始值。 如果组件制定了props 中的某些值，这些值回合this.props 的初始值合并，如果有相同的键，父组件制定的键值将覆盖初始值中的键。（这个实例在各个实例之间共享，而不是每个实例之间拷贝一份，从而节约资源）
 
 > ES5 语法
