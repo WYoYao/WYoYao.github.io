@@ -14,6 +14,7 @@ tags:
 # CSS选择器
 
 ### 1.基础的选择器
+
 |选择器|含义|示例|
 |:---|:---|:---|
 |*|通用元素选择器，匹配任何元素| { margin:0; padding:0; }|
@@ -22,6 +23,7 @@ tags:
 |#info|id选择器，匹配所有id属性等于info的元素|	#info { background:#ff0; }|
 
 ### 2.组合选择器
+
 |选择器|含义|示例|
 |:---|:---|:---|
 |E,F|多元素选择器，同时匹配所有E元素或F元素，E和F之间用逗号分隔|Div,p { color:#f00; }|
@@ -30,6 +32,7 @@ tags:
 |E + F|毗邻元素选择器，匹配所有紧随E元素之后的同级元素F|p + p { color:#f00; }|
 
 ### 3. CSS2.1属性选择器
+
 |选择器|含义|示例|
 |:---|:---|:---|
 |E[att]|匹配所有具有att属性的E元素，不考虑它的值。（注意：E在此处可以省略，比如“[cheacked]”。以下同。）|p[title] { color:#f00; }|
@@ -38,6 +41,7 @@ tags:
 |E[att\|=val]|匹配所有att属性具有多个连字号分隔（hyphen-separated）的值、其中一个值以“val”开头的E元素，主要用于lang属性，比如“en”、“en-us”、“en-gb”等等|p[lang\|=en] { color:#f00; }示例|
 
 ### 4. CSS2.1中的伪类
+
 |选择器|含义|示例|
 |:---|:---|:---|
 |E:first-child|	匹配父元素的第一个子元素|p:first-child { font-style:italic;}|
@@ -49,6 +53,7 @@ tags:
 |E:lang(c)|匹配lang属性等于c的E元素|q:lang(sv) { quotes: “\201D” “\201D” “\2019″ “\2019″; }|
 
 ### 5. CSS 2.1中的伪元素
+
 |选择器|含义|示例|
 |:---|:---|:---|
 |E:first-line|匹配E元素的第一行|p:first-line { font-weight:bold; color;#600; }|
@@ -58,11 +63,13 @@ tags:
 
 
 ### 6. CSS 3的同级元素通用选择器
+
 |选择器|含义|示例|
 |:---|:---|:---|
 |E ~ F|匹配任何在E元素之后的同级F元素|p ~ ul { background:#ff0; }|
 
 ### 7.CSS 3 属性选择器
+
 |选择器|含义|示例|
 |:---|:---|:---|
 |E[att^=”val”]|属性att的值以”val”开头的元素|div[id^="nav"] { background:#ff0; }|
