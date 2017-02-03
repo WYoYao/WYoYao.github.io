@@ -1,34 +1,62 @@
----
-layout: page
-title: "About"
-description: "Hey, this is WYY."
-header-img: "img/about-bg.jpg"
----
+--- layout: page title: "About" description: "Hey, this is WYY." header-img: "img/about-bg.jpg" ---
 
 <!-- Chinese Version -->
 <div class="zh post-container">
 
     <!--copied from markdown -->
-    <blockquote><p>Hello 2017<br>
-    转眼又是新的一年了,去年总给我一种半途而废的感觉，<br>
-    还是不能的真正的转换过来自己的状态。</p></blockquote>
+    <blockquote>
+        <p>Hello 2017<br> 转眼又是新的一年了,去年总给我一种半途而废的感觉，
+            <br> 还是不能的真正的转换过来自己的状态。
+        </p>
+    </blockquote>
     <p>已经没有太多的时间可以浪费了,今年需要完成的目标。</p>
     <ul>
-    <li>真正的BR,只能成功。</li>
-    <li>写一个自己满意的项目。</li>
-    <li>认真的思考自己写的每一行的代码。</li>
-    <li>要变的更强。</li>
+        <li>真正的BR,只能成功。</li>
+        <li>写一个自己满意的项目。</li>
+        <li>认真的思考自己写的每一行的代码。</li>
+        <li>要变的更强。</li>
     </ul>
     <p>我是<strong>王莹</strong></p>
 
     <h5>仅剩</h5>
 
-    <h2 style="float: left">350</h2><h2 style="float: left">天</h2><h2 style="float: left">12:12:56</h2>
+    <h2 style="float: left" id="days">350</h2>
+<h2 style="float: left">天</h2>
+<h2 style="float: left" id="date">12:12:56</h2>
 
 </div>
 
 <!-- Handle Language Change -->
 <script type="text/javascript">
+
+
+    function fn() {
+        var targetDate = new Date("2018-01-01");
+        var indexDate = new Date();
+        console.log(indexDate);
+        var total = (targetDate - indexDate);
+        var days = Math.floor(total / 24 / 60 / 60 / 1000);
+        var hours = indexDate.getMinutes() == 0 ? 24 - indexDate.getHours() : 24 - indexDate.getHours() - 1;
+        var minutes = indexDate.getSeconds() == 0 ? 60 - indexDate.getMinutes() : 60 - indexDate.getMinutes() - 1;
+        var seconed = 60 - indexDate.getSeconds();
+
+
+
+        return {
+            days: days,
+            hours: hours.toString().length == 1 ? "0" + hours.toString() : hours.toString(),
+            minutes: minutes.toString().length == 1 ? "0" + minutes.toString() : minutes.toString(),
+            seconed: seconed.toString().length == 1 ? "0" + seconed.toString() : seconed.toString(),
+        }
+    }
+
+    setInterval(function () {
+        var json = fn();
+        document.getElementById("days").innerText = json.days;
+        document.getElementById("date").innerText = json.hours + ":" + json.minutes + ":" + json.seconed;
+    }, 1000);
+
+
     // get nodes
     var $zh = document.querySelector(".zh");
     var $en = document.querySelector(".en");
@@ -38,15 +66,15 @@ header-img: "img/about-bg.jpg"
     window.addEventListener('hashchange', _render);
 
     // handle render
-    function _render(){
+    function _render() {
         var _hash = window.location.hash;
         // en
-        if(_hash == "#en"){
+        if (_hash == "#en") {
             $select.selectedIndex = 1;
             $en.style.display = "block";
             $zh.style.display = "none";
-        // zh by default
-        }else{
+            // zh by default
+        } else {
             // not trigger onChange, otherwise cause a loop call.
             $select.selectedIndex = 0;
             $zh.style.display = "block";
@@ -55,10 +83,10 @@ header-img: "img/about-bg.jpg"
     }
 
     // handle select change
-    function onLanChange(index){
-        if(index == 0){
+    function onLanChange(index) {
+        if (index == 0) {
             window.location.hash = "#zh"
-        }else{
+        } else {
             window.location.hash = "#en"
         }
     }
@@ -72,15 +100,8 @@ header-img: "img/about-bg.jpg"
 {% if site.duoshuo_username %}
 <!-- 多说评论框 start -->
 <div class="comment">
-    <div class="ds-thread"
-    {% if site.duoshuo_username == "huxblog" %}
-        data-thread-id="1187623191091085319"
-    {% else %}
-        data-thread-key="{{site.duoshuo_username}}/about"
-    {% endif %}
-
-    data-title="{{page.title}}"
-    data-url="{{site.url}}/about/"></div>
+    <div class="ds-thread" {% if site.duoshuo_username=="huxblog" %} data-thread-id="1187623191091085319" {% else %} data-thread-key="{{site.duoshuo_username}}/about"
+        {% endif %} data-title="{{page.title}}" data-url="{{site.url}}/about/"></div>
 </div>
 <!-- 多说评论框 end -->
 
@@ -90,21 +111,18 @@ header-img: "img/about-bg.jpg"
     var _user = '{{site.duoshuo_username}}';
 
     // duoshuo comment query.
-    var duoshuoQuery = {short_name: _user };
-    (function() {
+    var duoshuoQuery = { short_name: _user };
+    (function () {
         var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
+        ds.type = 'text/javascript'; ds.async = true;
         ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
         ds.charset = 'UTF-8';
         (document.getElementsByTagName('head')[0]
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
+            || document.getElementsByTagName('body')[0]).appendChild(ds);
     })();
 </script>
 <!-- 多说公共JS代码 end -->
-{% endif %}
-
-
-{% if site.disqus_username %}
+{% endif %} {% if site.disqus_username %}
 <!-- disqus 评论框 start -->
 <div class="comment">
     <div id="disqus_thread" class="disqus-thread">
@@ -120,7 +138,7 @@ header-img: "img/about-bg.jpg"
     var disqus_identifier = "{{site.disqus_username}}/{{page.url}}";
     var disqus_url = "{{site.url}}{{page.url}}";
 
-    (function() {
+    (function () {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
