@@ -30,7 +30,32 @@
 <script type="text/javascript">
 
 
-    function fn() {
+    // get nodes
+    var $zh = document.querySelector(".zh");
+    var $en = document.querySelector(".en");
+    var $select = document.querySelector("select");
+
+    // bind hashchange event
+    window.addEventListener('hashchange', _render);
+
+    // handle render
+    function _render() {
+        var _hash = window.location.hash;
+        // en
+        if (_hash == "#en") {
+            $select.selectedIndex = 1;
+            $en.style.display = "block";
+            $zh.style.display = "none";
+            // zh by default
+        } else {
+            // not trigger onChange, otherwise cause a loop call.
+            $select.selectedIndex = 0;
+            $zh.style.display = "block";
+            $en.style.display = "none";
+        }
+
+
+            function fn() {
         var targetDate = new Date("2018-01-01");
         var indexDate = new Date();
         console.log(indexDate);
@@ -55,31 +80,6 @@
         document.getElementById("days").innerText = json.days;
         document.getElementById("date").innerText = json.hours + ":" + json.minutes + ":" + json.seconed;
     }, 1000);
-
-
-    // get nodes
-    var $zh = document.querySelector(".zh");
-    var $en = document.querySelector(".en");
-    var $select = document.querySelector("select");
-
-    // bind hashchange event
-    window.addEventListener('hashchange', _render);
-
-    // handle render
-    function _render() {
-        var _hash = window.location.hash;
-        // en
-        if (_hash == "#en") {
-            $select.selectedIndex = 1;
-            $en.style.display = "block";
-            $zh.style.display = "none";
-            // zh by default
-        } else {
-            // not trigger onChange, otherwise cause a loop call.
-            $select.selectedIndex = 0;
-            $zh.style.display = "block";
-            $en.style.display = "none";
-        }
     }
 
     // handle select change
