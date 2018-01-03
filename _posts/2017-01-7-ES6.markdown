@@ -1,0 +1,97 @@
+---
+layout:     post
+title:      "ES实战ES2015"
+subtitle:   "ES实战ES2015"
+date:       2017-01-07
+author:     "WYY"
+header-img: "img/Coder.jpg"
+catalog: true
+tags:
+    - ES6
+---
+
+# ES6 
+
+### Let 
+
+>- var:没有块级作用域。
+>- let:有块级作用域。
+>- const:有块级作用域。
+
+||let|const|var|
+|--|--|--|--|
+|定义变量|true|true|true|
+|可被释放|true|true|true|
+|可被提升|||true|
+|重复定义检查|true|true||
+|可被用于块级作用域|true|true||
+
+### const
+
+>- const:只能限制基本类型的不可改变。
+
+```javascript
+const a={age:1};
+a.age=2; //==>true
+a=[]//==>false
+```
+
+### for of
+
+>- forEach的优点是再带闭包，以解决缺乏块级作用域。所以需要使用闭包函数来解决问题。
+
+>- for of 可以循环数组,但是并没有解决的块级作用域这一个问题，所以可是使用let const 来的解决这个问题。
+>- 同时还可以使用 for of来解决的forEach方法不能跳出循环的处理。
+
+```javascript
+
+var arr=[1,2,3,4];
+
+for(var item of arr) {
+    setTimeout(()=>console.log(item),0);
+    //==>  4,4,4,4
+}
+
+for(let item of arr) {
+    setTimeout(()=>console.log(item),0);
+    //==>  1,2,3,4
+}
+var arr1=[1,2,3,4,5,6,7,8];
+
+for(let item of arr1) {
+    // 奇数通过
+    if(item%2)continue;
+    // 大于7时跳出
+    if(item>7)break;
+    // 满足上面两个条件的时候可以打印出的对应的内容
+    console.log(item);
+}
+```
+
+### Arrow Function
+
+>- 单一参数的箭头函数
+```javascript
+// 单一参数的箭头函数
+const fn=name=>`hello ${name}`;
+// 多参数的箭头函数
+const fn1=(name,age)=>`hello ${name} ,${age}`;
+// 无参数的箭头函数
+const fn2=()=>`hello World`;
+// 内容多行的箭头函数
+const fn3=()=>{
+    return {name:'leo'};
+}
+// 箭头函数单行的写法不能直接返回的Object的对象，这样解释器无法区别返回的是一个Object，还是一个块级的作用域。
+const fn4=()=>{name:'leo'};
+
+const obj={
+    hello:'world',
+    fn(){
+        const bar=()=>console.log(this.hello);
+        return bar;
+    }
+}
+obj.fn()();
+//==> world 会打印出 world,因为ArrowFunction 的指向为上级作用域中的this
+```
