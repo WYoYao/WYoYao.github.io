@@ -7,7 +7,7 @@ author:     "WYY"
 header-img: "img/Coder.jpg"
 catalog: true
 tags:
-    - ES6
+    - JavaScript
 ---
 
 # ES6 
